@@ -40,8 +40,11 @@ addMethod("equalPath", function(target){
  */
 addProperty(["existOnDisk", "existsOnDisk"], function(){
 	const subject = Chai.util.flag(this, "object");
+	let exists;
+	try      { exists = fs.lstatSync(subject) instanceof fs.Stats; }
+	catch(e) { exists = false; }
 	this.assert(
-		fs.existsSync(subject),
+		exists,
 		`expected "${subject}" to exist in filesystem`,
 		`expected "${subject}" not to exist in filesystem`
 	);
@@ -58,8 +61,11 @@ addProperty(["existOnDisk", "existsOnDisk"], function(){
 addMethod(["pointTo", "pointingTo"], function(target){
 	const subject  = Chai.util.flag(this, "object");
 	Chai.expect(subject).to.be.a.symlink;
+	let realPath;
+	try      { realPath = fs.realpathSync(subject); }
+	catch(e) { realPath = fs.readlinkSync(subject); }
 	const expected = path.resolve(target);
-	const actual   = path.resolve(fs.realpathSync(subject));
+	const actual   = path.resolve(realPath);
 	this.assert(
 		expected === actual,
 		`expected "${subject}" to point to "${expected}"`,
