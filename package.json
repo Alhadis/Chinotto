@@ -1,0 +1,15 @@
+{
+	"name": "chinotto",
+	"version": "v0.0.0",
+	"description": "Custom Chai assertions, mainly filesystem-related.",
+	"author": "John Gardner <gardnerjohng@gmail.com>",
+	"keywords": ["chai", "plugin", "assertion", "filesystem", "testing"],
+	"repository": "https://github.com/Alhadis/Chinotto",
+	"license": "ISC",
+	"engines": {"node": ">=8.0.0"},
+	"files": ["index.js", "register-chai.js"],
+	"dependencies": {"chai": "*"},
+	"devDependencies": {
+		"mocha": "^6.2.0"
+	}
+}
