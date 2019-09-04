@@ -6,7 +6,6 @@
 const fs    = require("fs");
 const path  = require("path");
 const Chai  = require("chai");
-global.Chai = Chai;
 
 
 /**
