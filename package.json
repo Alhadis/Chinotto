@@ -10,6 +10,7 @@
 	"files": ["index.js", "register-chai.js"],
 	"dependencies": {"chai": "*"},
 	"devDependencies": {
-		"mocha": "^6.2.0"
+		"mocha":      "^6.2.0",
+		"mocha-when": "^1.0.1"
 	}
 }
