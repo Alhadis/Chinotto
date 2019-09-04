@@ -9,6 +9,28 @@ const Chai  = require("chai");
 
 
 /**
+ * Assert that two filesystem paths are logically the same.
+ * @name      equalPath
+ * @memberof! Chai.Assertion.prototype
+ * @example   "/bin".should.equalPath("/bin/");
+ *            "/bin/../bin".should.equalPath("/bin");
+ */
+addMethod("equalPath", function(target){
+	const subject = String(Chai.util.flag(this, "object"));
+	const normalisedSubject = path.normalize(subject);
+	const normalisedTarget  = path.normalize(target);
+	this.assert(
+		normalisedSubject === normalisedTarget,
+		`expected path "${subject}" to equal "${target}"`,
+		`expected path "${subject}" not to equal "${target}"`,
+		normalisedSubject,
+		normalisedTarget,
+		true
+	);
+});
+
+
+/**
  * Assert that a file exists in the filesystem.
  * @name      existOnDisk
  * @alias     existsOnDisk
