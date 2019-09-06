@@ -111,6 +111,7 @@ addMethod(["hardLink", "hardLinkOf"], function(target){
  */
 addProperty(["file", "regularFile"], function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isFile(),
@@ -129,6 +130,7 @@ addProperty(["file", "regularFile"], function(){
  */
 addProperty("directory", function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isDirectory(),
@@ -147,6 +149,7 @@ addProperty("directory", function(){
  */
 addProperty(["symlink", "symbolicLink"], function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isSymbolicLink(),
@@ -170,6 +173,7 @@ addProperty(["symlink", "symbolicLink"], function(){
  */
 addProperty(["device", "deviceFile"], function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	const stats = fs.lstatSync(subject);
 	this.assert(
@@ -188,6 +192,7 @@ addProperty(["device", "deviceFile"], function(){
  */
 addProperty("blockDevice", function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isBlockDevice(),
@@ -206,6 +211,7 @@ addProperty("blockDevice", function(){
  */
 addProperty(["characterDevice", "charDevice"], function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isCharacterDevice(),
@@ -224,6 +230,7 @@ addProperty(["characterDevice", "charDevice"], function(){
  */
 addProperty(["fifo", "namedPipe"], function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isFIFO(),
@@ -242,6 +249,7 @@ addProperty(["fifo", "namedPipe"], function(){
  */
 addProperty("door", function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		0xD000 === (fs.lstatSync(subject).mode & 0xF000),
@@ -259,6 +267,7 @@ addProperty("door", function(){
  */
 addProperty("socket", function(){
 	const subject = String(Chai.util.flag(this, "object"));
+	if(Chai.util.flag(this, "negate") && !fs.existsSync(subject)) return;
 	Chai.expect(subject).to.existOnDisk;
 	this.assert(
 		fs.lstatSync(subject).isSocket(),
