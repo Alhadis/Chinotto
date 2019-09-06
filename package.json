@@ -13,11 +13,13 @@
 		"@alhadis/eslint-config": "^1.2.0",
 		"eslint":     "^6.3.0",
 		"mocha":      "^6.2.0",
-		"mocha-when": "^1.0.1"
+		"mocha-when": "^1.0.1",
+		"nyc":        "^14.1.1"
 	},
 	"scripts": {
-		"lint": "npx eslint",
-		"test": "npx mocha"
+		"cover": "npx nyc npm --silent run test",
+		"lint":  "npx eslint",
+		"test":  "npx mocha"
 	},
 	"eslintConfig": {
 		"extends": "@alhadis",
@@ -26,5 +28,9 @@
 			"files": ["index.js"],
 			"rules": {"keyword-spacing": 0}
 		}]
+	},
+	"nyc": {
+		"all": true,
+		"reporter": "text"
 	}
 }
