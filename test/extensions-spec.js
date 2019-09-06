@@ -261,8 +261,8 @@ describe("Chinotto", () => {
 			const fn1 = () => expect("/dev/null").to.be.a.blockDevice;
 			const fn2 = () => expect("/dev/disk0s1").not.to.be.a.blockDevice;
 			const fn3 = () => expect(__filename + ".nah").to.be.a.blockDevice;
-			expect(fn1).to.throw(AssertionError, `expected "/dev/null" to be a block device`);
-			expect(fn2).to.throw(AssertionError, `expected "/dev/disk0s1" not to be a block device`);
+			expect(fn1).to.throw(AssertionError, 'expected "/dev/null" to be a block device');
+			expect(fn2).to.throw(AssertionError, 'expected "/dev/disk0s1" not to be a block device');
 			expect(fn3).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
 		});
 	});
@@ -276,8 +276,8 @@ describe("Chinotto", () => {
 			const fn1 = () => expect("/dev/disk0s1").to.be.a.characterDevice;
 			const fn2 = () => expect("/dev/null").not.to.be.a.characterDevice;
 			const fn3 = () => expect(__filename + ".nah").to.be.a.characterDevice;
-			expect(fn1).to.throw(AssertionError, `expected "/dev/disk0s1" to be a character device`);
-			expect(fn2).to.throw(AssertionError, `expected "/dev/null" not to be a character device`);
+			expect(fn1).to.throw(AssertionError, 'expected "/dev/disk0s1" to be a character device');
+			expect(fn2).to.throw(AssertionError, 'expected "/dev/null" not to be a character device');
 			expect(fn3).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
 		});
 		it("supports `.charDevice` as an alias", () => {
@@ -295,7 +295,7 @@ describe("Chinotto", () => {
 			const fn1 = () => expect(__filename).to.be.a.fifo;
 			const fn2 = () => expect("/tmp/154B17E1-2BF7_IN").not.to.be.a.fifo;
 			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a FIFO`);
-			expect(fn2).to.throw(AssertionError, `expected "/tmp/154B17E1-2BF7_IN" not to be a FIFO`);
+			expect(fn2).to.throw(AssertionError, 'expected "/tmp/154B17E1-2BF7_IN" not to be a FIFO');
 		});
 		it("supports `.namedPipe` as an alias", () => {
 			expect("/tmp/154B17E1-2BF7_IN").to.be.a.namedPipe;
@@ -312,7 +312,7 @@ describe("Chinotto", () => {
 			const fn1 = () => expect(__filename).to.be.a.door;
 			const fn2 = () => expect("/system/volatile/syslog_door").not.to.be.a.door;
 			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a door`);
-			expect(fn2).to.throw(AssertionError, `expected "/system/volatile/syslog_door" not to be a door`);
+			expect(fn2).to.throw(AssertionError, 'expected "/system/volatile/syslog_door" not to be a door');
 		});
 	});
 	
@@ -325,7 +325,7 @@ describe("Chinotto", () => {
 			const fn1 = () => expect(__filename).to.be.a.socket;
 			const fn2 = () => expect("/run/systemd/private").not.to.be.a.socket;
 			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a socket`);
-			expect(fn2).to.throw(AssertionError, `expected "/run/systemd/private" not to be a socket`);
+			expect(fn2).to.throw(AssertionError, 'expected "/run/systemd/private" not to be a socket');
 		});
 	});
 });

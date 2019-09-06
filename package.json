@@ -23,10 +23,16 @@
 	},
 	"eslintConfig": {
 		"extends": "@alhadis",
-		"globals": {"expect": true},
+		"globals": {
+			"expect": true,
+			"when": true
+		},
 		"overrides": [{
-			"files": ["index.js"],
+			"files": ["lib/extensions.js"],
 			"rules": {"keyword-spacing": 0}
+		},{
+			"files": ["lib/utils.js"],
+			"rules": {"func-style": 0}
 		}]
 	},
 	"nyc": {
