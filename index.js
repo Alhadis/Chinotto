@@ -7,6 +7,12 @@ const fs    = require("fs");
 const path  = require("path");
 const Chai  = require("chai");
 
+module.exports = {
+	Chai,
+	addMethod,
+	addProperty,
+};
+
 
 /**
  * Assert that two filesystem paths are logically the same.
@@ -285,7 +291,6 @@ addProperty("socket", function(){
  * @param   {String|String[]} names
  * @param   {Function} fn
  * @return  {void}
- * @internal
  */
 function addMethod(names, fn){
 	for(const name of "string" === typeof names ? [names] : names)
@@ -301,7 +306,6 @@ function addMethod(names, fn){
  * @param   {String|String[]} names
  * @param   {Function} fn
  * @return  {void}
- * @internal
  */
 function addProperty(names, fn){
 	for(const name of "string" === typeof names ? [names] : names)
