@@ -10,7 +10,21 @@
 	"files": ["index.js", "register-chai.js"],
 	"dependencies": {"chai": "*"},
 	"devDependencies": {
+		"@alhadis/eslint-config": "^1.2.0",
+		"eslint":     "^6.3.0",
 		"mocha":      "^6.2.0",
 		"mocha-when": "^1.0.1"
+	},
+	"scripts": {
+		"lint": "npx eslint",
+		"test": "npx mocha"
+	},
+	"eslintConfig": {
+		"extends": "@alhadis",
+		"globals": {"expect": true},
+		"overrides": [{
+			"files": ["index.js"],
+			"rules": {"keyword-spacing": 0}
+		}]
 	}
 }
