@@ -5,7 +5,7 @@ const fs   = require("fs");
 const path = require("path");
 
 
-describe("Chinotto", () => {
+describe("Filesystem-related extensions", () => {
 	const tmp = path.join(__dirname, "tmp");
 	
 	before("Creating fixture directory", () => fs.existsSync(tmp) || fs.mkdirSync(tmp));
