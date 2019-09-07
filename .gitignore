@@ -18,4 +18,5 @@ package-lock.json
 
 # Project-specific
 /test/tmp
-/browser.js
+/browser.*
+/index.*

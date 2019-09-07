@@ -1,7 +1,7 @@
 "use strict";
 
 const Chai     = require("chai");
-const Chinotto = require("..");
+const Chinotto = require("../index.js");
 const {AssertionError} = Chai;
 
 

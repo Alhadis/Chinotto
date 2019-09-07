@@ -7,7 +7,8 @@
 	"repository": "https://github.com/Alhadis/Chinotto",
 	"license": "ISC",
 	"engines": {"node": ">=8.0.0"},
-	"files": ["index.js"],
+	"main": "index.js",
+	"files": ["browser.*", "index.*"],
 	"dependencies": {"chai": "*"},
 	"devDependencies": {
 		"@alhadis/eslint-config": "^1.2.0",
@@ -19,7 +20,8 @@
 		"karma":                  "^4.3.0",
 		"mocha-when":             "^1.0.1",
 		"mocha":                  "^6.2.0",
-		"nyc":                    "^14.1.1"
+		"nyc":                    "^14.1.1",
+		"rollup":                 "^1.20.3"
 	},
 	"scripts": {
 		"cover": "make coverage",
@@ -34,17 +36,19 @@
 			"when": true
 		},
 		"overrides": [{
-			"files": ["lib/extensions.js"],
+			"files": ["lib/filesystem.mjs"],
 			"rules": {"keyword-spacing": 0}
 		},{
-			"files": ["lib/utils.js"],
+			"files": ["lib/utils.mjs"],
 			"rules": {"func-style": 0}
 		}]
 	},
-	"eslintIgnore": ["browser.js"],
 	"nyc": {
 		"all": true,
 		"reporter": "text",
-		"include": ["index.js", "lib/*.js"]
+		"include": [
+			"index.*",
+			"lib/*.mjs"
+		]
 	}
 }
