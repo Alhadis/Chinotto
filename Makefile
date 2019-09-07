@@ -1,7 +1,7 @@
 all: lint coverage test report
 
 coverage:
-	(npx nyc mocha --reporter min 2>&1) >/dev/null
+	npx nyc mocha --reporter progress
 
 clean:
 	rm -rf .nyc_output

@@ -22,7 +22,7 @@ describe("DOM-specific extensions", () => {
 		};
 	}
 	
-	before(() => isBrowser && window.Chinotto.extendChai());
+	before(() => isBrowser && window.extendChai());
 	
 	afterEach(() => [...document.body.childNodes].forEach(child => {
 		if(Node.ELEMENT_NODE !== child.nodeType || !child.matches("#mocha"))
