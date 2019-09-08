@@ -10,18 +10,19 @@ dist: esm cjs umd
 # ECMAScript modules
 esm: index.mjs
 index.mjs: lib/*.mjs
+	@ printf '==> Bundling: %s\n' "$@"
 	npx rollup \
 		--format esm \
 		--preferConst \
 		--input lib/index.mjs \
 		--file $@
 	sed -i~ -e "/^import .* from '[^']*';$$/ s/'\([^']*\)';/"'"\1";/' $@ && rm -f "$@~"
-	rm -f "$@~"
 
 
 # CommonJS/Node.js modules
 cjs: index.js
 index.js: lib/*.mjs
+	@ printf '==> Bundling: %s\n' "$@"
 	npx rollup \
 		--format cjs \
 		--preferConst \
@@ -30,20 +31,20 @@ index.js: lib/*.mjs
 		--no-esModule \
 		--input lib/index.mjs \
 		--file $@
-	sed -i~ \
-		-e "s/require('\([^']*\)');\$$/require("'"\1");/' \
-		-e "s/^'\(use strict\)';\$$/"'"\1";/' $@
-	rm -f "$@~"
+	sed -i~ -e "\
+		s/require('\([^']*\)');"'$$/require("\1");/; \
+		s/^'"'use strict';"'$$/"use strict";/; \
+	' $@ && rm -f "$@~"
 
 
 # UMD/Browser-only (filesystem assertions removed)
 umd: browser.js
 browser.js: lib/*.mjs
+	@ printf '==> Bundling: %s\n' "$@"
 	npx rollup \
 		--format iife \
 		--preferConst \
 		--no-esModule \
-		--no-freeze \
 		--no-interop \
 		--name Chinotto \
 		--input lib/dom.mjs \
@@ -51,12 +52,11 @@ browser.js: lib/*.mjs
 		--external chai \
 		--extend window \
 		--file $@
-	sed -i~ \
-		-e 's/^(function *(exports, chai) *{$$/(function(exports, chai){/; q' \
-		-e 's/^\([[:blank:]]*\)'"'use strict';"'$$/\1"use strict";/' \
-		-e 's/^\(}(.*,\) *chai));$$/\1 this.chai));/' $@
-	rm -f "$@~"
-	rm -f ./.\!*.js
+	sed -i~ -e '\
+		s/^(function *(exports, chai) *{$$/(function(exports, chai){/; \
+		s/'\'use\ strict\'';$$/"use strict";/; \
+		/^}(/ s/,[[:blank:]]*chai));$$/, this.chai));/; \
+	' $@ && rm -f "$@~"
 
 
 # Generate raw coverage data for both Node and browser tests

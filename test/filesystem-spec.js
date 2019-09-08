@@ -9,7 +9,7 @@ describe("Filesystem-related extensions", () => {
 	const tmp = path.join(__dirname, "tmp");
 	
 	before("Creating fixture directory", () => fs.existsSync(tmp) || fs.mkdirSync(tmp));
-	before("Loading extensions",         () => require("../index.js"));
+	before("Loading extensions",         () => require("../index.js").register());
 	after("Emptying fixture directory",  () => {
 		for(const file of fs.readdirSync(tmp))
 			fs.unlinkSync(path.join(tmp, file));

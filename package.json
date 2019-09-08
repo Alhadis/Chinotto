@@ -30,6 +30,7 @@
 	},
 	"eslintConfig": {
 		"extends": "@alhadis",
+		"rules": {"func-style": 0},
 		"globals": {
 			"globalThis": true,
 			"expect": true,
@@ -38,13 +39,15 @@
 		"overrides": [{
 			"files": ["lib/filesystem.mjs"],
 			"rules": {"keyword-spacing": 0}
-		},{
-			"files": ["lib/utils.mjs"],
-			"rules": {"func-style": 0}
 		}]
 	},
+	"eslintIgnore": [
+		"index.js",
+		"index.mjs"
+	],
 	"nyc": {
 		"all": true,
+		"extensions": ["js", "mjs"],
 		"reporter": "text",
 		"include": [
 			"index.*",
