@@ -25,6 +25,7 @@ index.js: lib/*.mjs
 	npx rollup \
 		--format cjs \
 		--preferConst \
+		--no-freeze \
 		--no-interop \
 		--no-esModule \
 		--input lib/index.mjs \
@@ -46,10 +47,16 @@ browser.js: lib/*.mjs
 		--no-interop \
 		--name Chinotto \
 		--input lib/dom.mjs \
-		--intro 'var {Chai} = window;' \
+		--globals chai:chai \
 		--external chai \
 		--extend window \
 		--file $@
+	sed -i~ \
+		-e 's/^(function *(exports, chai) *{$$/(function(exports, chai){/; q' \
+		-e 's/^\([[:blank:]]*\)'"'use strict';"'$$/\1"use strict";/' \
+		-e 's/^\(}(.*,\) *chai));$$/\1 this.chai));/' $@
+	rm -f "$@~"
+	rm -f ./.\!*.js
 
 
 # Generate raw coverage data for both Node and browser tests
