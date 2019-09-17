@@ -230,102 +230,105 @@ describe("Filesystem-related extensions", () => {
 	});
 	
 	
-	describe(".device", () => {
-		it("identifies block devices",         () => expect("/dev/disk0s1").to.be.a.device);
-		it("identifies character devices",     () => expect("/dev/null").to.be.a.device);
-		it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.device);
-		it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.device);
-		it("generates meaningful errors",      () => {
-			const fn1 = () => expect(__filename).to.be.a.device;
-			const fn2 = () => expect("/dev/disk0s1").not.to.be.a.device;
-			const fn3 = () => expect("/dev/null").not.to.be.a.device;
-			const fn4 = () => expect(__filename + ".nah").to.be.a.device;
-			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a character or block device`);
-			expect(fn2).to.throw(AssertionError, 'expected "/dev/disk0s1" not to be a character or block device');
-			expect(fn3).to.throw(AssertionError, 'expected "/dev/null" not to be a character or block device');
-			expect(fn4).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
+	
+	if("win32" !== process.platform){
+		describe(".fifo", () => {
+			it("identifies matching filetypes",    () => expect("/tmp/154B17E1-2BF7_IN").to.be.a.fifo);
+			it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.fifo);
+			it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.fifo);
+			it("generates meaningful errors",      () => {
+				const fn1 = () => expect(__filename).to.be.a.fifo;
+				const fn2 = () => expect("/tmp/154B17E1-2BF7_IN").not.to.be.a.fifo;
+				expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a FIFO`);
+				expect(fn2).to.throw(AssertionError, 'expected "/tmp/154B17E1-2BF7_IN" not to be a FIFO');
+			});
+			it("supports `.namedPipe` as an alias", () => {
+				expect("/tmp/154B17E1-2BF7_IN").to.be.a.namedPipe;
+				expect(__filename).not.to.be.a.namedPipe;
+			});
 		});
-		it("supports `.deviceFile` as an alias", () => {
-			expect("/dev/disk0s1").to.be.a.deviceFile;
-			expect("/dev/null").to.be.a.deviceFile;
-			expect(__filename + ".nah").not.to.be.a.deviceFile;
+		
+		
+		describe(".device", () => {
+			it("identifies block devices",         () => expect("/dev/disk0s1").to.be.a.device);
+			it("identifies character devices",     () => expect("/dev/null").to.be.a.device);
+			it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.device);
+			it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.device);
+			it("generates meaningful errors",      () => {
+				const fn1 = () => expect(__filename).to.be.a.device;
+				const fn2 = () => expect("/dev/disk0s1").not.to.be.a.device;
+				const fn3 = () => expect("/dev/null").not.to.be.a.device;
+				const fn4 = () => expect(__filename + ".nah").to.be.a.device;
+				expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a character or block device`);
+				expect(fn2).to.throw(AssertionError, 'expected "/dev/disk0s1" not to be a character or block device');
+				expect(fn3).to.throw(AssertionError, 'expected "/dev/null" not to be a character or block device');
+				expect(fn4).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
+			});
+			it("supports `.deviceFile` as an alias", () => {
+				expect("/dev/disk0s1").to.be.a.deviceFile;
+				expect("/dev/null").to.be.a.deviceFile;
+				expect(__filename + ".nah").not.to.be.a.deviceFile;
+			});
 		});
-	});
-	
-	
-	describe(".blockDevice", () => {
-		it("identifies matching filetypes",    () => expect("/dev/disk0s1").to.be.a.blockDevice);
-		it("identifies mismatching filetypes", () => expect("/dev/null").not.to.be.a.blockDevice);
-		it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.blockDevice);
-		it("generates meaningful errors",      () => {
-			const fn1 = () => expect("/dev/null").to.be.a.blockDevice;
-			const fn2 = () => expect("/dev/disk0s1").not.to.be.a.blockDevice;
-			const fn3 = () => expect(__filename + ".nah").to.be.a.blockDevice;
-			expect(fn1).to.throw(AssertionError, 'expected "/dev/null" to be a block device');
-			expect(fn2).to.throw(AssertionError, 'expected "/dev/disk0s1" not to be a block device');
-			expect(fn3).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
+		
+		
+		describe(".blockDevice", () => {
+			it("identifies matching filetypes",    () => expect("/dev/disk0s1").to.be.a.blockDevice);
+			it("identifies mismatching filetypes", () => expect("/dev/null").not.to.be.a.blockDevice);
+			it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.blockDevice);
+			it("generates meaningful errors",      () => {
+				const fn1 = () => expect("/dev/null").to.be.a.blockDevice;
+				const fn2 = () => expect("/dev/disk0s1").not.to.be.a.blockDevice;
+				const fn3 = () => expect(__filename + ".nah").to.be.a.blockDevice;
+				expect(fn1).to.throw(AssertionError, 'expected "/dev/null" to be a block device');
+				expect(fn2).to.throw(AssertionError, 'expected "/dev/disk0s1" not to be a block device');
+				expect(fn3).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
+			});
 		});
-	});
-	
-	
-	describe(".characterDevice", () => {
-		it("identifies matching filetypes",    () => expect("/dev/null").to.be.a.characterDevice);
-		it("identifies mismatching filetypes", () => expect("/dev/disk0s1").not.to.be.a.characterDevice);
-		it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.characterDevice);
-		it("generates meaningful errors",      () => {
-			const fn1 = () => expect("/dev/disk0s1").to.be.a.characterDevice;
-			const fn2 = () => expect("/dev/null").not.to.be.a.characterDevice;
-			const fn3 = () => expect(__filename + ".nah").to.be.a.characterDevice;
-			expect(fn1).to.throw(AssertionError, 'expected "/dev/disk0s1" to be a character device');
-			expect(fn2).to.throw(AssertionError, 'expected "/dev/null" not to be a character device');
-			expect(fn3).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
+		
+		
+		describe(".characterDevice", () => {
+			it("identifies matching filetypes",    () => expect("/dev/null").to.be.a.characterDevice);
+			it("identifies mismatching filetypes", () => expect("/dev/disk0s1").not.to.be.a.characterDevice);
+			it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.characterDevice);
+			it("generates meaningful errors",      () => {
+				const fn1 = () => expect("/dev/disk0s1").to.be.a.characterDevice;
+				const fn2 = () => expect("/dev/null").not.to.be.a.characterDevice;
+				const fn3 = () => expect(__filename + ".nah").to.be.a.characterDevice;
+				expect(fn1).to.throw(AssertionError, 'expected "/dev/disk0s1" to be a character device');
+				expect(fn2).to.throw(AssertionError, 'expected "/dev/null" not to be a character device');
+				expect(fn3).to.throw(AssertionError, `expected "${__filename}.nah" to exist in filesystem`);
+			});
+			it("supports `.charDevice` as an alias", () => {
+				expect("/dev/null").to.be.a.charDevice;
+				expect("/dev/disk0s1").not.to.be.a.charDevice;
+			});
 		});
-		it("supports `.charDevice` as an alias", () => {
-			expect("/dev/null").to.be.a.charDevice;
-			expect("/dev/disk0s1").not.to.be.a.charDevice;
+		
+		
+		describe(".door", () => {
+			it("identifies matching filetypes",    () => expect("/system/volatile/syslog_door").to.be.a.door);
+			it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.door);
+			it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.door);
+			it("generates meaningful errors",      () => {
+				const fn1 = () => expect(__filename).to.be.a.door;
+				const fn2 = () => expect("/system/volatile/syslog_door").not.to.be.a.door;
+				expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a door`);
+				expect(fn2).to.throw(AssertionError, 'expected "/system/volatile/syslog_door" not to be a door');
+			});
 		});
-	});
-	
-	
-	describe(".fifo", () => {
-		it("identifies matching filetypes",    () => expect("/tmp/154B17E1-2BF7_IN").to.be.a.fifo);
-		it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.fifo);
-		it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.fifo);
-		it("generates meaningful errors",      () => {
-			const fn1 = () => expect(__filename).to.be.a.fifo;
-			const fn2 = () => expect("/tmp/154B17E1-2BF7_IN").not.to.be.a.fifo;
-			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a FIFO`);
-			expect(fn2).to.throw(AssertionError, 'expected "/tmp/154B17E1-2BF7_IN" not to be a FIFO');
+		
+		
+		describe(".socket", () => {
+			it("identifies matching filetypes",    () => expect("/run/systemd/private").to.be.a.socket);
+			it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.socket);
+			it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.socket);
+			it("generates meaningful errors",      () => {
+				const fn1 = () => expect(__filename).to.be.a.socket;
+				const fn2 = () => expect("/run/systemd/private").not.to.be.a.socket;
+				expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a socket`);
+				expect(fn2).to.throw(AssertionError, 'expected "/run/systemd/private" not to be a socket');
+			});
 		});
-		it("supports `.namedPipe` as an alias", () => {
-			expect("/tmp/154B17E1-2BF7_IN").to.be.a.namedPipe;
-			expect(__filename).not.to.be.a.namedPipe;
-		});
-	});
-	
-	
-	describe(".door", () => {
-		it("identifies matching filetypes",    () => expect("/system/volatile/syslog_door").to.be.a.door);
-		it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.door);
-		it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.door);
-		it("generates meaningful errors",      () => {
-			const fn1 = () => expect(__filename).to.be.a.door;
-			const fn2 = () => expect("/system/volatile/syslog_door").not.to.be.a.door;
-			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a door`);
-			expect(fn2).to.throw(AssertionError, 'expected "/system/volatile/syslog_door" not to be a door');
-		});
-	});
-	
-	
-	describe(".socket", () => {
-		it("identifies matching filetypes",    () => expect("/run/systemd/private").to.be.a.socket);
-		it("identifies mismatching filetypes", () => expect(__filename).not.to.be.a.socket);
-		it("identifies non-existent entities", () => expect(__filename + ".nah").not.to.be.a.socket);
-		it("generates meaningful errors",      () => {
-			const fn1 = () => expect(__filename).to.be.a.socket;
-			const fn2 = () => expect("/run/systemd/private").not.to.be.a.socket;
-			expect(fn1).to.throw(AssertionError, `expected "${__filename}" to be a socket`);
-			expect(fn2).to.throw(AssertionError, 'expected "/run/systemd/private" not to be a socket');
-		});
-	});
+	}
 });
