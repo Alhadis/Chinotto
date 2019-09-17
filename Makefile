@@ -1,22 +1,13 @@
 ENV = NODE_OPTIONS='--experimental-modules'
-NPM = ADBLOCK=1 npm install --quiet --no-save --no-package-lock
 
 all: install dist lint test
 
 
 # Install and link development dependencies
-install: node_modules node_modules/jg
+install: node_modules
 
-node_modules:; $(NPM)
-
-# Handle jg(1) specially, since a stable version's not published yet
-# - FIXME: Remove these tasks once our current mess of projects is sorted
-node_modules/jg:
-	git clone https://github.com/Alhadis/JG.git $@
-	cd $@ && git checkout b5bdbe5 && npm install .
-	rm -rf 'node_modules/@alhadis/eslint-config'
-	ln -s ../jg/eslint 'node_modules/@alhadis/eslint-config'
-	ln -s jg/node_modules/eslint-plugin-import node_modules
+node_modules:
+	ADBLOCK=1 npm install --quiet --no-save --no-package-lock
 
 
 # Generate a bundle in each module flavour we care about

@@ -11,8 +11,8 @@
 	"files": ["browser.*", "index.*"],
 	"dependencies": {"chai": "*"},
 	"devDependencies": {
-		"@alhadis/eslint-config": "^1.2.0",
 		"eslint":                 "^6.3.0",
+		"eslint-plugin-import":   "^2.18.2",
 		"jsdom":                  "^15.1.1",
 		"karma-chrome-launcher":  "^3.1.0",
 		"karma-mocha-reporter":   "^2.2.5",
@@ -27,19 +27,6 @@
 		"cover": "make coverage",
 		"lint":  "make lint",
 		"test":  "make test"
-	},
-	"eslintConfig": {
-		"extends": "@alhadis",
-		"rules": {"func-style": 0},
-		"globals": {
-			"globalThis": true,
-			"expect": true,
-			"when": true
-		},
-		"overrides": [{
-			"files": ["lib/filesystem.mjs"],
-			"rules": {"keyword-spacing": 0}
-		}]
 	},
 	"eslintIgnore": [
 		"index.js",
