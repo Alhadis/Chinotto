@@ -18,7 +18,7 @@ install:
 test_script:
     - node --version
     - npm --version
-    - npm run --silent lint
-    - npm run --silent test
+    - refreshenv
+    - make all
 
 build: off

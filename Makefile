@@ -33,7 +33,8 @@ index.mjs: lib/*.mjs
 		--preferConst \
 		--input lib/index.mjs \
 		--file $@
-	sed -i~ -e "/^import .* from '[^']*';$$/ s/'\([^']*\)';/"'"\1";/' $@ && rm -f "$@~"
+	sed -i~ -f tools/fix-esm.sed $@
+	rm -f "$@~"
 
 
 # CommonJS/Node.js modules
@@ -49,10 +50,8 @@ index.js: lib/*.mjs
 		--no-esModule \
 		--input lib/index.mjs \
 		--file $@
-	sed -i~ -e "\
-		s/require('\([^']*\)');"'$$/require("\1");/; \
-		s/^'"'use strict';"'$$/"use strict";/; \
-	' $@ && rm -f "$@~"
+	sed -i~ -f tools/fix-cjs.sed $@
+	rm -f "$@~"
 
 
 # UMD/Browser-only (filesystem assertions removed)
@@ -71,11 +70,8 @@ browser.js: lib/*.mjs
 		--external chai \
 		--extend window \
 		--file $@
-	sed -i~ -e '\
-		s/^(function *(exports, chai) *{$$/(function(exports, chai){/; \
-		s/'\'use\ strict\'';$$/"use strict";/; \
-		/^}(/ s/,[[:blank:]]*chai));$$/, this.chai));/; \
-	' $@ && rm -f "$@~"
+	sed -i~ -f tools/fix-umd.sed $@
+	rm -f "$@~"
 
 
 # Check source for errors and style violations
