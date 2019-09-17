@@ -21,26 +21,17 @@
 		"karma":                  "^4.3.0",
 		"mocha-when":             "^1.0.1",
 		"mocha":                  "^6.2.0",
-		"nyc":                    "^14.1.1",
-		"rollup":                 "^1.20.3"
+		"nyc":                    "^14.1.1"
 	},
 	"scripts": {
 		"cover": "make coverage",
 		"lint":  "make lint",
 		"test":  "make test"
 	},
-	"eslintIgnore": [
-		"index.js",
-		"index.mjs"
-	],
 	"nyc": {
 		"all": true,
 		"clean": false,
 		"reporter": "text",
-		"include": [
-			"browser.*",
-			"index.js",
-			"lib/*.mjs"
-		]
+		"include": ["index.js"]
 	}
 }

@@ -8,7 +8,7 @@ module.exports = karma => {
 		singleRun:  true,
 		files: [
 			"node_modules/chai/chai.js",
-			"browser.js",
+			"index.js",
 			"test/dom-spec.js",
 		],
 		preprocessors: {
