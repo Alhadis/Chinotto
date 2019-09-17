@@ -47,9 +47,11 @@
 	],
 	"nyc": {
 		"all": true,
+		"clean": false,
 		"extensions": ["js", "mjs"],
 		"reporter": "text",
 		"include": [
+			"browser.*",
 			"index.*",
 			"lib/*.mjs"
 		]
