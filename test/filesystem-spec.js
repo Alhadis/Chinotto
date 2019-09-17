@@ -19,10 +19,10 @@ describe("Filesystem-related extensions", () => {
 	const bogusStats = require("./bogus-stats.json");
 	beforeEach("Patching `fs` module", () => {
 		fs.existsSync = function(...args){
-			return bogusStats[args[0]] ? true : existsSync.call(this, ...args);
+			return bogusStats[args[0].replace(/\\/g, "/")] ? true : existsSync.call(this, ...args);
 		};
 		fs.lstatSync = function(...args){
-			const stats = bogusStats[args[0]];
+			const stats = bogusStats[args[0].replace(/\\/g, "/")];
 			return stats
 				? new Stats(...Object.keys(stats).map(k => stats[k]))
 				: lstatSync.call(this, ...args);
