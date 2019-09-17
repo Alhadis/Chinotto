@@ -1,3 +1,5 @@
+NPM = ADBLOCK=1 npm install --quiet --no-save --no-package-lock
+
 all: install lint test
 
 
@@ -5,12 +7,24 @@ all: install lint test
 install: node_modules
 
 node_modules:
-	ADBLOCK=1 npm install --quiet --no-save --no-package-lock
+	$(NPM)
+
+node_modules/coveralls:
+	$(NPM) coveralls
 
 
 # Check source for errors and style violations
 lint:
 	npx eslint .
+
+
+# Submit coverage information to Coveralls.io
+coverage: node_modules/coveralls .nyc_output
+	npx nyc report --reporter text-lcov | npx coveralls
+
+.nyc_output:
+	$(MAKE) test
+
 
 # Run all unit-tests
 test: test-node test-browser

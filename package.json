@@ -7,8 +7,7 @@
 	"repository": "https://github.com/Alhadis/Chinotto",
 	"license": "ISC",
 	"engines": {"node": ">=8.0.0"},
-	"main": "index.js",
-	"files": ["browser.*", "index.*"],
+	"files": ["index.js"],
 	"dependencies": {"chai": "*"},
 	"devDependencies": {
 		"eslint":                 "^6.3.0",
