@@ -1,5 +1,3 @@
-ENV = NODE_OPTIONS='--experimental-modules'
-
 all: install dist lint test
 
 
@@ -24,8 +22,8 @@ index.mjs: lib/*.mjs
 		--preferConst \
 		--input lib/index.mjs \
 		--file $@
-	sed -i~ -f tools/fix-esm.sed $@
-	rm -f "$@~"
+	sed -i~ -f tools/fix-esm.sed $@ && rm -f "$@~"
+	dos2unix $@ >/dev/null 2>&1 || true
 
 
 # CommonJS/Node.js modules
@@ -41,8 +39,8 @@ index.js: lib/*.mjs
 		--no-esModule \
 		--input lib/index.mjs \
 		--file $@
-	sed -i~ -f tools/fix-cjs.sed $@
-	rm -f "$@~"
+	sed -i~ -f tools/fix-cjs.sed $@ && rm -f "$@~"
+	dos2unix $@ >/dev/null 2>&1 || true
 
 
 # UMD/Browser-only (filesystem assertions removed)
@@ -61,8 +59,8 @@ browser.js: lib/*.mjs
 		--external chai \
 		--extend window \
 		--file $@
-	sed -i~ -f tools/fix-umd.sed $@
-	rm -f "$@~"
+	sed -i~ -f tools/fix-umd.sed $@ && rm -f "$@~"
+	dos2unix $@ >/dev/null 2>&1 || true
 
 
 # Check source for errors and style violations
@@ -71,7 +69,7 @@ lint:
 
 # Generate raw coverage data for both Node and browser tests
 coverage: dist
-	$(ENV) npx nyc mocha --reporter progress
+	npx nyc mocha --reporter progress
 
 # Display a plain-text summary of code coverage
 report:
@@ -83,11 +81,11 @@ test: test-node test-browser
 
 # Run tests specific to Node.js (or in this case, specific to the filesystem)
 test-node: cjs
-	$(ENV) npx mocha test/filesystem-spec.js test/utils-spec.js
+	npx mocha test/filesystem-spec.js test/utils-spec.js
 
 # Launch a headless browser to run tests that require a DOM
 test-browser: browser.js
-	$(ENV) npx karma start
+	npx karma start
 
 
 
