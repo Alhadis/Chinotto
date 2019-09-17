@@ -67,31 +67,25 @@ browser.js: lib/*.mjs
 lint:
 	npx eslint .
 
-# Generate raw coverage data for both Node and browser tests
-coverage: dist
-	npx nyc mocha --reporter progress
-
-# Display a plain-text summary of code coverage
-report:
-	npx nyc --no-clean report
-
-
 # Run all unit-tests
 test: test-node test-browser
+	cd .nyc_output && mv browsers/coverage.json .
+	npx nyc report
 
 # Run tests specific to Node.js (or in this case, specific to the filesystem)
 test-node: cjs
-	npx mocha test/filesystem-spec.js test/utils-spec.js
+	npx nyc --silent mocha test/filesystem-spec.js test/utils-spec.js
 
 # Launch a headless browser to run tests that require a DOM
 test-browser: browser.js
+	[ ! -e .nyc_output/browsers/coverage.json ] || rm .nyc_output/browsers/coverage.json
 	npx karma start
 
 
 
 # Wipe generated coverage data, fixtures, and build-targets
 clean:
-	rm -rf .nyc_output
+	rm -rf .nyc_output coverage
 	rm -rf test/tmp
 	rm -f browser.js index.js index.mjs
 
@@ -101,4 +95,4 @@ clobber: clean
 
 
 # Don't check timestamps if files of these names happen to exist
-.PHONY: coverage clean clobber lint report test
+.PHONY: clean clobber lint test
