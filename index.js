@@ -1,4 +1,4 @@
-(function(global, factory){
+(function(global, factory){ /* istanbul ignore next */
 	"object" === typeof exports && "undefined" !== typeof module
 		? module.exports = factory(require("chai"), require("path"), require("fs"))
 		: "function" === typeof define && define.amd
@@ -13,7 +13,7 @@
 	/**
 	 * Variant of {@link chai.Assertion.addMethod} that supports plugin aliases.
 	 *
-	 * If the property already exists on the prototype, it will not be overwriten.
+	 * If the property already exists on the prototype, it will not be overwritten.
 	 * To redefine existing methods and prototypes, use {@link chai.util.addMethod}
 	 * or {@link chai.util.overwriteMethod}.
 	 * 
@@ -138,7 +138,7 @@
 	function flattenList(input, refs = null){
 		refs = refs || new WeakSet();
 		input = "string" === typeof input
-			? [input]
+			? [input.trim()]
 			: refs.add(input) && Array.from(input).slice();
 		
 		const output = [];
@@ -163,29 +163,31 @@
 	 *
 	 * @example
 	 *    formatList(["A", "B"])            == '"A" and "B"';
-	 *    formatList(["A", "B", "C"])       == '"A", "B", and "C"';
-	 *    formatList(["A", "B", "C"], "or") == '"A", "B", or "C"';
+	 *    formatList(["A", "B", "C"])       == '"A", "B" and "C"';
+	 *    formatList(["A", "B", "C"], "or") == '"A", "B" or "C"';
 	 *
 	 * @param {String[]} list
 	 * @param {String} [rel="and"]
+	 * @param {Boolean} [oxfordComma=false]
 	 * @return {String}
 	 * @internal
 	 */
-	function formatList(list, rel = "and"){
+	function formatList(list, rel = "and", oxfordComma = false){
 		const inspect = input => JSON.stringify(input);
 		list = [...list];
 		if(list.length > 1){
 			list = list.map(inspect);
 			const last = list.pop();
 			return list.join(", ")
-				+ (list.length > 2 ? "," : "")
+				+ (oxfordComma && list.length > 1 ? "," : "")
 				+ ` ${rel} ${last}`;
 		}
 		else{
-			list = list.map(inspect).join(", ") || "''";
+			list = list.map(inspect).join(", ") || '""';
 			return list;
 		}
 	}
+	
 	
 	/**
 	 * Register every available Chai extension.
