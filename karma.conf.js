@@ -9,6 +9,7 @@ module.exports = karma => {
 		files: [
 			"node_modules/chai/chai.js",
 			"index.js",
+			"register.js",
 			"test/dom-spec.js",
 		],
 		preprocessors: {

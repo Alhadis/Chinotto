@@ -232,10 +232,12 @@
 	 * @example
 	 *    import Chinotto from "./lib/index.mjs";
 	 *    Chinotto.register();
+	 * @return {Object}
 	 */
 	function register(){
 		for(const [names, fn] of methods)    addMethod(names, fn);
 		for(const [names, fn] of properties) addProperty(names, fn);
+		return this;
 	}
 	
 	

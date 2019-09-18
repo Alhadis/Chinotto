@@ -6,6 +6,8 @@ const {AssertionError} = Chai;
 
 
 describe("Utility functions", () => {
+	before("Loading extensions", () => require("../register.js"));
+	
 	describe("addMethod()", () => {
 		const {addMethod} = Chinotto;
 		
