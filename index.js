@@ -5,9 +5,39 @@
 			? define(["chai", "path", "fs"], factory)
 			: (global = global || self, global.Chinotto = factory(global.chai, global.path, global.fs));
 }(this, (chai, path, fs) => {
+	/**
+	 * @module Chinotto
+	 */
 	"use strict";
 	
 	const {hasOwnProperty} = Object.prototype;
+
+
+	/**
+	 * Named exports provided by the library's entry-point.
+	 * @namespace Chinotto.Exports
+	 * @property {Object} chai - Reference to the Chai module used by Chinotto.
+	 * @property {Map<String[], Function>} methods - Handler functions for assertion methods, keyed by name(s)
+	 * @property {Map<String[], Function>} properties - Handler functions for assertion properties, keyed by name(s)
+	 * @extends Chinotto.Utils
+	 */
+
+	/**
+	 * Assertion methods added to Chai's chainable DSL by {@link #register}.
+	 * @namespace Chinotto.Methods
+	 * @see {@link https://www.chaijs.com/api/plugins/#method_addmethod}
+	 */
+
+	/**
+	 * Assertion properties added to Chai's chainable DSL by {@link #register}.
+	 * @namespace Chinotto.Properties
+	 * @see {@link https://www.chaijs.com/api/plugins/#method_addproperty}
+	 */
+
+	/**
+	 * Auxiliary helper functions for defining new Chai extensions.
+	 * @namespace Chinotto.Utils
+	 */
 
 
 	/**
@@ -16,7 +46,8 @@
 	 * If the property already exists on the prototype, it will not be overwritten.
 	 * To redefine existing methods and prototypes, use {@link chai.util.addMethod}
 	 * or {@link chai.util.overwriteMethod}.
-	 * 
+	 *
+	 * @name    module:Chinotto.Utils.addMethod
 	 * @see     {@link https://www.chaijs.com/api/plugins/#addMethod}
 	 * @example addMethod(["pointTo", "pointingTo"], function(target){ … });
 	 * @param   {String|String[]} names
@@ -34,6 +65,7 @@
 	/**
 	 * Variant of {@link chai.Assertion.addProperty} that supports plugin aliases.
 	 *
+	 * @name    module:Chinotto.Utils.addProperty
 	 * @see     {@link https://www.chaijs.com/api/plugins/#addProperty}
 	 * @example addProperty(["coloured", "colored"], fn);
 	 * @param   {String|String[]} names
@@ -51,6 +83,7 @@
 	/**
 	 * Variant of {@link defineAssertions} that defines only one assertion.
 	 *
+	 * @name  module:Chinotto.Utils.defineAssertion
 	 * @param {String|String[]} names
 	 * @param {Function} handler
 	 * @return {void}
@@ -64,6 +97,7 @@
 	/**
 	 * Wrapper for defining simple custom Chai assertions.
 	 *
+	 * @name module:Chinotto.Utils.defineAssertions
 	 * @param {Object} spec
 	 * @example <caption>Defining a "colour" assertion</caption>
 	 *    // Typical definition:
@@ -130,10 +164,11 @@
 	 *
 	 * Strings are split by whitespace as separate elements of the final array.
 	 *
+	 * @private
+	 * @name module:Chinotto.Utils.flattenList
 	 * @param {Array|String} input
 	 * @param {WeakSet} [refs=null]
 	 * @return {String[]} An array of strings
-	 * @internal
 	 */
 	function flattenList(input, refs = null){
 		refs = refs || new WeakSet();
@@ -161,6 +196,8 @@
 	/**
 	 * Format a list of strings for human-readable output.
 	 *
+	 * @private
+	 * @name module:Chinotto.Utils.formatList
 	 * @example
 	 *    formatList(["A", "B"])            == '"A" and "B"';
 	 *    formatList(["A", "B", "C"])       == '"A", "B" and "C"';
@@ -170,7 +207,6 @@
 	 * @param {String} [rel="and"]
 	 * @param {Boolean} [oxfordComma=false]
 	 * @return {String}
-	 * @internal
 	 */
 	function formatList(list, rel = "and", oxfordComma = false){
 		const inspect = input => JSON.stringify(input);
@@ -191,7 +227,8 @@
 	
 	/**
 	 * Register every available Chai extension.
-	 * @public
+	 *
+	 * @name module:Chinotto.Utils.register
 	 * @example
 	 *    import Chinotto from "./lib/index.mjs";
 	 *    Chinotto.register();
@@ -207,9 +244,9 @@
 		/**
 		 * Check if an {@link HTMLElement} contains one or more CSS classes.
 		 *
-		 * @function class
+		 * @name     module:Chinotto.Methods.class
 		 * @alias    classes
-		 * @param    {...(String|String[])} expected
+		 * @param    {...(String|String[])} expected - An array or whitespace-delimited list of CSS class-names
 		 * @example  document.body.should.have.class("content");
 		 *           expect($(".btn.large")).to.have.classes("btn", "large");
 		 */
@@ -240,8 +277,9 @@
 		
 		/**
 		 * Assert that two filesystem paths are logically the same.
-		 * @name      equalPath
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Methods.equalPath
+		 * @param     {String} target
 		 * @example   "/bin".should.equalPath("/bin/");
 		 *            "/bin/../bin".should.equalPath("/bin");
 		 */
@@ -262,9 +300,10 @@
 		
 		/**
 		 * Assert that two files have the same inode and device number.
-		 * @name      hardLink
+		 *
+		 * @name      module:Chinotto.Methods.hardLink
 		 * @alias     hardLinkOf
-		 * @memberof! chai.Assertion.prototype
+		 * @param     {String} target
 		 * @example   "/a/huge/file".should.have.hardLink("/same/huge/file");
 		 *            expect("huge.file").to.be.hardLinkOf("also.huge");
 		 */
@@ -289,9 +328,10 @@
 
 		/**
 		 * Assert that a symbolic link points to the specified file.
-		 * @name      pointTo
+		 *
+		 * @name      module:Chinotto.Methods.pointTo
 		 * @alias     pointingTo
-		 * @memberof! chai.Assertion.prototype
+		 * @param     {String} target
 		 * @example   "/tmp".should.be.a.symlink.pointingTo("/private/tmp");
 		 */
 		[["pointTo", "pointingTo"], function(target){
@@ -315,8 +355,8 @@
 		
 		/**
 		 * Assert that an {@link HTMLElement} is rendered in the DOM tree.
-		 * @name      drawn
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Properties.drawn
 		 * @example   document.body.should.be.drawn;
 		 *            document.head.should.not.be.drawn;
 		 */
@@ -338,8 +378,8 @@
 		
 		/**
 		 * Assert that an {@link HTMLElement} has user focus, or contains something which does.
-		 * @name      focus
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Properties.focus
 		 * @example   document.activeElement.should.have.focus;
 		 *            document.createElement("div").should.not.have.focus;
 		 */
@@ -370,9 +410,9 @@
 	
 		/**
 		 * Assert that a file exists in the filesystem.
-		 * @name      existOnDisk
+		 *
+		 * @name      module:Chinotto.Properties.existOnDisk
 		 * @alias     existsOnDisk
-		 * @memberof! chai.Assertion.prototype
 		 * @example   "/bin/sh".should.existOnDisk
 		 *            "<>:*?\0".should.not.existOnDisk
 		 */
@@ -391,9 +431,9 @@
 		
 		/**
 		 * Assert that subject is a path pointing to a regular file.
-		 * @name      file
+		 *
+		 * @name      module:Chinotto.Properties.file
 		 * @alias     regularFile
-		 * @memberof! chai.Assertion.prototype
 		 * @example   "/bin/sh".should.be.a.file
 		 *            "/bin".should.not.be.a.file
 		 */
@@ -411,8 +451,8 @@
 		
 		/**
 		 * Assert that subject is a path pointing to a directory.
-		 * @name      directory
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Properties.directory
 		 * @example   "/bin".should.be.a.directory
 		 *            "/bin/sh".should.not.be.a.directory
 		 */
@@ -430,9 +470,9 @@
 
 		/**
 		 * Assert that subject is a path pointing to a symbolic link.
-		 * @name      symlink
+		 *
+		 * @name      module:Chinotto.Properties.symlink
 		 * @alias     symbolicLink
-		 * @memberof! chai.Assertion.prototype
 		 * @example   "/usr/local/bin/node".should.be.a.symlink
 		 */
 		[["symlink", "symbolicLink"], function(){
@@ -454,9 +494,8 @@
 		 * this assertion preferable to {@link blockDevice} and {@link characterDevice}
 		 * for cross-platform testing.
 		 *
-		 * @name      device
+		 * @name      module:Chinotto.Properties.device
 		 * @alias     deviceFile
-		 * @memberof! chai.Assertion.prototype
 		 * @example   "/dev/zero".should.be.a.device;
 		 */
 		[["device", "deviceFile"], function(){
@@ -474,8 +513,8 @@
 
 		/**
 		 * Assert that subject is a path pointing to a block device.
-		 * @name      blockDevice
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Properties.blockDevice
 		 * @example   "/dev/disk0s1".should.be.a.blockDevice
 		 */
 		[["blockDevice"], function(){
@@ -492,9 +531,9 @@
 
 		/**
 		 * Assert that subject is a path pointing to a character device.
-		 * @name      characterDevice
+		 *
+		 * @name      module:Chinotto.Properties.characterDevice
 		 * @alias     charDevice
-		 * @memberof! chai.Assertion.prototype
 		 * @example   "/dev/null".should.be.a.characterDevice
 		 */
 		[["characterDevice", "charDevice"], function(){
@@ -511,9 +550,9 @@
 
 		/**
 		 * Assert that subject is a path pointing to a FIFO (named pipe).
-		 * @name      fifo
+		 *
+		 * @name      module:Chinotto.Properties.fifo
 		 * @alias     namedPipe
-		 * @memberof! chai.Assertion.prototype
 		 * @example   "/tmp/154B17E1-2BF7_IN".should.be.a.fifo
 		 */
 		[["fifo", "namedPipe"], function(){
@@ -530,8 +569,8 @@
 
 		/**
 		 * Assert that subject is a path pointing to a door.
-		 * @name      door
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Properties.door
 		 * @example   "/system/volatile/syslog_door".should.be.a.door
 		 * @see       {@link https://en.wikipedia.org/wiki/Doors_(computing)}
 		 */
@@ -549,8 +588,8 @@
 
 		/**
 		 * Assert that subject is a path pointing to a socket.
-		 * @name      socket
-		 * @memberof! chai.Assertion.prototype
+		 *
+		 * @name      module:Chinotto.Properties.socket
 		 * @example   "/run/systemd/private".should.be.a.socket
 		 */
 		[["socket"], function(){
@@ -567,6 +606,8 @@
 	
 	return {
 		chai,
+		methods,
+		properties,
 		addMethod,
 		addProperty,
 		defineAssertion,
@@ -574,7 +615,5 @@
 		flattenList,
 		formatList,
 		register,
-		methods,
-		properties,
 	};
 }));

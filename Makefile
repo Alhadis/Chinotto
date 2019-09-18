@@ -13,6 +13,14 @@ node_modules/coveralls:
 	$(NPM) coveralls
 
 
+# Update API reference in readme
+docs: README.md
+
+README.md: index.js
+	npx jsdoc --explain $^ | node tools/make-docs.js
+	
+
+
 # Check source for errors and style violations
 lint:
 	npx eslint .
