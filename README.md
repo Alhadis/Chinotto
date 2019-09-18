@@ -16,5 +16,5 @@ in particular).
 [AppVeyor-link]:  https://ci.appveyor.com/project/Alhadis/Chinotto
 [TravisCI-badge]: https://travis-ci.org/Alhadis/Chinotto.svg?branch=master
 [TravisCI-link]:  https://travis-ci.org/Alhadis/Chinotto
-[Coverage-badge]: https://coveralls.io/repos/github/Alhadis/Chinotto/badge.svg?branch=master
+[Coverage-badge]: https://img.shields.io/coveralls/Alhadis/Chinotto.svg
 [Coverage-link]:  https://coveralls.io/github/Alhadis/Chinotto?branch=master
