@@ -6,7 +6,7 @@
 	"keywords": ["chai", "plugin", "assertion", "filesystem", "testing"],
 	"repository": "https://github.com/Alhadis/Chinotto",
 	"license": "ISC",
-	"engines": {"node": ">=8.0.0"},
+	"engines": {"node": ">=v8.16.1"},
 	"files": ["index.js", "register.js"],
 	"peerDependencies": {"chai": ">3 <5"},
 	"devDependencies": {
