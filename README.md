@@ -9,6 +9,7 @@ Chinotto: Custom assertions for [Chai.js](https://www.chaijs.com)
 [![Build status: TravisCI][TravisCI-badge]][TravisCI-link]
 [![Build status: AppVeyor][AppVeyor-badge]][AppVeyor-link]
 [![Coverage status][Coverage-badge]][Coverage-link]
+[![Latest release][NPM-badge]][NPM-link]
 
 
 Compilation of useful Chai assertions that I've written over time,
@@ -75,6 +76,8 @@ Usage
 [TravisCI-link]:  https://travis-ci.org/Alhadis/Chinotto
 [Coverage-badge]: https://img.shields.io/coveralls/Alhadis/Chinotto.svg
 [Coverage-link]:  https://coveralls.io/github/Alhadis/Chinotto?branch=master
+[NPM-badge]:      https://img.shields.io/npm/v/chinotto.svg?colorB=brightgreen
+[NPM-link]:       https://github.com/Alhadis/chinotto/releases/latest
 
 
 API reference
@@ -421,4 +424,3 @@ Register every available Chai extension.
 import Chinotto from "./lib/index.mjs";
 Chinotto.register();
 ~~~
-
