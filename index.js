@@ -409,6 +409,78 @@
 			else throw new TypeError("subject is not an HTMLElement or component-like object");
 		}],
 		
+		
+		/**
+		 * Assert that subject is a path pointing to an executable.
+		 *
+		 * @name module:Chinotto.Properties.executable
+		 * @description
+		 *    NOTE: This assertion tests two very different things, depending on the
+		 *    currently-running platform. On Unix-like systems, the mode of the file's
+		 *    lstat(2) is bitmasked against `0o111` to extract the executable bits:
+		 *
+		 * @example <caption>POSIX systems</caption>
+		 *    "/usr/local/bin/node".should.be.executable; // lrwxr-xr-x
+		 *    "./doc/README.md".should.not.be.executable; // -rw-r--r--
+		 *
+		 * @description
+		 *    Because Windows has no concept of permission bits, the `PATHEXT` environment
+		 *    variable is checked instead. If the subject string ends with an executable file
+		 *    extension (or would if one was added), the assertion passes.
+		 *
+		 * @example <caption>Windows systems</caption>
+		 *    "C:\\Program Files\\nodejs\\node"     .should.be.executable;
+		 *    "C:\\Program Files\\nodejs\\node.exe" .should.be.executable;
+		 *    "C:\\Program Files\\nodejs\\README.md".should.not.be.executable;
+		 */
+		[["executable"], function(){
+			const subject = String(chai.util.flag(this, "object"));
+			const negated = chai.util.flag(this, "negate");
+			const exists  = fs.existsSync(subject);
+			
+			// Windows
+			if("win32" === process.platform){
+				// Normalise capitalisation; Windows environment variables are case-insensitive.
+				const env = Object.create(null);
+				for(const key in process.env)
+					env[key.toUpperCase()] = process.env[key];
+				
+				const exts = (env.PATHEXT || ".COM;.EXE;.BAT;.CMD").toLowerCase().split(";").filter(Boolean);
+				
+				// Filepath exists
+				if(exists){
+					const stats = fs.lstatSync(subject);
+					const ext   = path.extname(subject).toUpperCase();
+					
+					// ... but it's a directory, not a file or symlink
+					if(stats.isDirectory()){
+						if(!negated) return;
+						throw new TypeError(`expected "${subject}" to be a file or symbolic link`);
+					}
+					
+					// Filename ends with an executable extension; valid
+					else if(exts.includes(ext)) return;
+					
+					// Filename *doesn't* end with an executable extension, but another file in this directory might
+					else{
+						const dir  = path.dirname(subject);
+						const ents = fs.readdirSync(dir).map(name => path.join(dir, name.toLowerCase()));
+						console.log(ents);
+					}
+				}
+			}
+			
+			// POSIX
+			else{
+				if(negated && !exists) return;
+				this.assert(
+					!!(0o111 & fs.lstatSync(subject).mode),
+					`expected "${subject}" to be executable`,
+					`expected "${subject}" not to be executable`
+				);
+			}
+		}],
+		
 	
 		/**
 		 * Assert that a file exists in the filesystem.
