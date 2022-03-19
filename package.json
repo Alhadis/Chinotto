@@ -10,9 +10,10 @@
 	"files": ["index.js", "register.js"],
 	"peerDependencies": {"chai": ">3 <5"},
 	"devDependencies": {
+		"@alhadis/eslint-config": "^2.3.4",
 		"chai":                   ">3 <5",
-		"eslint":                 "^6.3.0",
-		"eslint-plugin-import":   "^2.18.2",
+		"eslint":                 "^7.32.0",
+		"eslint-plugin-import":   "^2.24.2",
 		"jsdoc":                  "^3.6.3",
 		"jsdom":                  "^15.1.1",
 		"karma-coverage":         "^2.0.1",
@@ -28,6 +29,23 @@
 		"cover": "make coverage",
 		"lint":  "make lint",
 		"test":  "make test"
+	},
+	"eslintConfig": {
+		"extends": "@alhadis",
+		"env": {
+			"amd": true
+		},
+		"globals": {
+			"expect": true,
+			"when": true
+		},
+		"overrides": [{
+			"files": ["index.js"],
+			"rules": {
+				"func-style": 0,
+				"keyword-spacing": 0
+			}
+		}]
 	},
 	"nyc": {
 		"all": true,

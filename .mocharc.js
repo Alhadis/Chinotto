@@ -2,7 +2,7 @@
 
 module.exports = {
 	require: [
-		"chai/register-expect",
+		"./node_modules/chai/register-expect.js",
 		"mocha-when/register",
 	]
 };
